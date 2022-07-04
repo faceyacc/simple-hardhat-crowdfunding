@@ -1,8 +1,12 @@
-const { network } = require("hardhat")
+import { HardhatRuntimeEnvironment } from "hardhat/types"
+import { DeployFunction } from "hardhat-deploy/types"
 
-const DECIMALS = "8"
-const INITIAL_PRICE = "200000000000" // 2000
-module.exports = async ({ getNamedAccounts, deployments }) => {
+const DECIMALS = "18"
+const INITIAL_PRICE = "2000000000000000000000" // 2000
+const deployMocks: DeployFunction = async function (
+    hre: HardhatRuntimeEnvironment
+) {
+    const { deployments, getNamedAccounts, network } = hre
     const { deploy, log } = deployments
     const { deployer } = await getNamedAccounts()
     const chainId = network.config.chainId
@@ -16,14 +20,15 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
             args: [DECIMALS, INITIAL_PRICE],
         })
         log("Mocks Deployed!")
-        log("------------------------------------------------")
+        log("----------------------------------")
         log(
             "You are deploying to a local network, you'll need a local network running to interact"
         )
         log(
-            "Please run `npx hardhat console` to interact with the deployed smart contracts!"
+            "Please run `yarn hardhat console` to interact with the deployed smart contracts!"
         )
-        log("------------------------------------------------")
+        log("----------------------------------")
     }
 }
-module.exports.tags = ["all", "mocks"]
+export default deployMocks
+deployMocks.tags = ["all", "mocks"]
